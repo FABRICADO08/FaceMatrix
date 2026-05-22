@@ -12,7 +12,7 @@ export default function GateScan({ isAdmin = false }) {
   if (!isAdmin) {
     return (
       <div className="p-8 bg-red-900 bg-opacity-20 border border-red-600 rounded-lg text-red-400 text-center">
-        <p className="font-semibold">⛔ Access Denied</p>
+        <p className="font-semibold text-lg">⛔ Access Denied</p>
         <p className="text-sm mt-2">Gate Scan is only available to administrators.</p>
       </div>
     );
@@ -36,7 +36,7 @@ export default function GateScan({ isAdmin = false }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl">
       <div className="dark-card rounded-lg p-8 mb-6">
         <h3 className="gold-text text-sm uppercase tracking-widest font-semibold mb-6">GATE SCANNING</h3>
         <Webcam 
@@ -47,14 +47,18 @@ export default function GateScan({ isAdmin = false }) {
         <button 
           onClick={scanFace} 
           disabled={scanning} 
-          className="button-gold w-full px-6 py-3 rounded font-semibold uppercase tracking-wider disabled:opacity-50"
+          className="button-gold w-full px-6 py-3 rounded font-semibold uppercase tracking-wider disabled:opacity-50 transition"
         >
           {scanning ? '🔄 SCANNING...' : '📸 SCAN FACE AT GATE'}
         </button>
       </div>
 
       {result && (
-        <div className={`p-6 rounded-lg border ${result.success ? 'bg-green-900 bg-opacity-20 border-green-600' : 'bg-red-900 bg-opacity-20 border-red-600'}`}>
+        <div className={`p-6 rounded-lg border ${
+          result.success 
+            ? 'bg-green-900 bg-opacity-20 border-green-600' 
+            : 'bg-red-900 bg-opacity-20 border-red-600'
+        }`}>
           {result.success ? (
             <>
               <p className="font-bold text-green-400 text-lg mb-4">✅ ACCESS GRANTED</p>
