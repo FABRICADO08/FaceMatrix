@@ -5,7 +5,7 @@ export default function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   return (
-    <nav className="bg-black border-b border-yellow-600 text-white px-6 py-4 shadow-lg">
+    <nav className="bg-black border-b border-yellow-600 text-white px-6 py-4 shadow-lg fixed w-full top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center gap-3">
           <div className="text-2xl font-bold text-yellow-500">
