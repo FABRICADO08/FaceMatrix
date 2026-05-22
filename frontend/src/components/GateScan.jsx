@@ -4,10 +4,19 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function GateScan() {
+export default function GateScan({ isAdmin = false }) {
   const webcamRef = useRef(null);
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState(null);
+
+  if (!isAdmin) {
+    return (
+      <div className="p-8 bg-red-900 bg-opacity-20 border border-red-600 rounded-lg text-red-400 text-center">
+        <p className="font-semibold">⛔ Access Denied</p>
+        <p className="text-sm mt-2">Gate Scan is only available to administrators.</p>
+      </div>
+    );
+  }
 
   const scanFace = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -27,23 +36,36 @@ export default function GateScan() {
   };
 
   return (
-    <div className="max-w-xl mx-auto">
-      <Webcam ref={webcamRef} screenshotFormat="image/jpeg" className="w-full rounded mb-4" />
-      <button onClick={scanFace} disabled={scanning} className="bg-green-600 text-white px-6 py-2 rounded w-full">
-        {scanning ? 'Scanning...' : 'Scan Face at Gate'}
-      </button>
+    <div className="max-w-2xl mx-auto">
+      <div className="dark-card rounded-lg p-8 mb-6">
+        <h3 className="gold-text text-sm uppercase tracking-widest font-semibold mb-6">GATE SCANNING</h3>
+        <Webcam 
+          ref={webcamRef} 
+          screenshotFormat="image/jpeg" 
+          className="w-full rounded-lg mb-6 border border-gray-700"
+        />
+        <button 
+          onClick={scanFace} 
+          disabled={scanning} 
+          className="button-gold w-full px-6 py-3 rounded font-semibold uppercase tracking-wider disabled:opacity-50"
+        >
+          {scanning ? '🔄 SCANNING...' : '📸 SCAN FACE AT GATE'}
+        </button>
+      </div>
 
       {result && (
-        <div className={`mt-6 p-4 rounded ${result.success ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500'} border`}>
+        <div className={`p-6 rounded-lg border ${result.success ? 'bg-green-900 bg-opacity-20 border-green-600' : 'bg-red-900 bg-opacity-20 border-red-600'}`}>
           {result.success ? (
             <>
-              <p className="font-bold text-green-800">✅ Access Granted</p>
-              <p>Name: {result.name}</p>
-              <p>Team: {result.team}</p>
-              <p>Idea: {result.idea}</p>
+              <p className="font-bold text-green-400 text-lg mb-4">✅ ACCESS GRANTED</p>
+              <div className="space-y-2 text-sm">
+                <p><span className="text-gray-400">Name:</span> <span className="text-white font-semibold">{result.name}</span></p>
+                <p><span className="text-gray-400">Team:</span> <span className="text-white font-semibold">{result.team}</span></p>
+                <p><span className="text-gray-400">Idea:</span> <span className="text-white font-semibold">{result.idea}</span></p>
+              </div>
             </>
           ) : (
-            <p className="text-red-800">❌ {result.message}</p>
+            <p className="text-red-400 font-semibold">❌ {result.message}</p>
           )}
         </div>
       )}
